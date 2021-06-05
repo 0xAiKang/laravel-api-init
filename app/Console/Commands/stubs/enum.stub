@@ -1,0 +1,24 @@
+<?php
+
+namespace {{ namespace }};
+
+use BenSampo\Enum\Enum;
+
+class {{ class }} extends Enum
+{
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public static function getDescription($value): string
+    {
+        switch ($value) {
+
+
+            default:
+                return self::getKey($value);
+        }
+    }
+}

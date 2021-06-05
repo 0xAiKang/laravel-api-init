@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+class {{ class }}
+{
+    protected $model;
+
+    public function __construct()
+    {
+        // $this->$model = $model;
+    }
+}
