@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // 添加场景验证 scene 方法
+        Route::macro('scene', function ($scene = null) {
+            $action = Route::getAction();
+            $action['_scene'] = $scene;
+            Route::setAction($action);
+        });
     }
 }
