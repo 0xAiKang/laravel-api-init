@@ -14,18 +14,14 @@ use Exception;
  */
 class InternalException extends Exception
 {
-    use ApiResponse;
-
-    protected $msgForUser;
-
-    public function __construct($message = "", string $msgForUser = '系统内部错误', $code = 500)
+    /**
+     * InternalException constructor.
+     *
+     * @param string $message
+     * @param int    $code
+     */
+    public function __construct($message = "系统内部错误", $code = 500)
     {
         parent::__construct($message, $code);
-        $this->msgForUser = $msgForUser;
-    }
-
-    public function render()
-    {
-        return $this->failed($this->msgForUser);
     }
 }
