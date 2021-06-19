@@ -37,11 +37,10 @@ class UsersController extends Controller
     public function index()
     {
         $data = $this->userService->index();
-        $list = UserResource::collection($data);
 
         return $this->success([
-            "list" => $list,
-            "page" => page($list),
+            "list" => get_item($data),
+            "page" => get_page($data),
         ]);
     }
 

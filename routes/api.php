@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post("auth/login", [AuthController::class, "login"]);
+Route::post("auth/logout", [AuthController::class, "logout"]);
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -27,7 +31,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     });
 });*/
 
-Route::prefix("v1")->namespace("Api")->group(function (){
+Route::namespace("Api")->group(function (){
     Route::prefix("users")->group(function (){
         Route::get("/index", "UsersController@index");
         Route::post("/create", "UsersController@create");
