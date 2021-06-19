@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UserRequest;
-use App\Http\Resources\Api\UserResource;
 use App\Services\Api\UserService;
 
 /**
@@ -53,7 +52,7 @@ class UsersController extends Controller
      */
     public function create(UserRequest $request)
     {
-        $param = $request->only(["name", "email", "password", "avatar"]);
+        $param = $request->only(["name", "email", "password", "avatar", "hobby"]);
         $this->userService->create($param);
 
         return $this->success();
@@ -68,7 +67,7 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request)
     {
-        $param = $request->only(["name", "email", "password", "avatar"]);
+        $param = $request->only(["name", "email", "password", "avatar", "hobby"]);
         $this->userService->update($request->id, $param);
 
         return $this->success();

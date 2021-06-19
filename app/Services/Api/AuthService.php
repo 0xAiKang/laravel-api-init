@@ -23,7 +23,7 @@ class AuthService
     public function login($request)
     {
         $rules = [
-            "username" => "required",
+            "name" => "required",
             "password" => "required",
         ];
 
@@ -33,7 +33,7 @@ class AuthService
             throw new InvalidRequestException("用户名或密码不能为空");
         }
 
-        if (!$token = auth("admin")->attempt($validator->validated())) {
+        if (!$token = auth("api")->attempt($validator->validated())) {
             throw new InvalidRequestException("用户名或密码错误");
         }
 

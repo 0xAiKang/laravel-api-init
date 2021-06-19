@@ -31,10 +31,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     });
 });*/
 
-Route::namespace("Api")->group(function (){
+Route::namespace("Api")->middleware("auth.api")->group(function (){
     Route::prefix("users")->group(function (){
-        Route::get("/index", "UsersController@index");
-        Route::post("/create", "UsersController@create");
-        Route::post("/update", "UsersController@update");
+        Route::get("/index", "UsersController@index")->scene("index");
+        Route::post("/create", "UsersController@create")->scene("create");
+        Route::post("/update", "UsersController@update")->scene("update");
     });
 });

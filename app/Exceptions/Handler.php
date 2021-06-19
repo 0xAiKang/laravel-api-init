@@ -27,6 +27,7 @@ class Handler extends ExceptionHandler
     protected $doReport = [
         InternalException::class,
         InvalidRequestException::class,
+        AuthException::class,
     ];
 
     /**

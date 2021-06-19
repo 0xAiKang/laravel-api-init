@@ -97,5 +97,8 @@ class Kernel extends HttpKernel
 
         // Laravel 自带的强制用户邮箱认证的中间件
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
+        // api身份认证
+        "auth.api" => \App\Http\Middleware\AuthApi::class,
     ];
 }

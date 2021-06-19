@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * App\Models\UserModel
@@ -32,7 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class UserModel extends Model
+class UserModel extends Authenticatable implements JWTSubject
 {
     /**
      * The table associated with the model.
@@ -49,6 +50,13 @@ class UserModel extends Model
     protected $keyType = 'integer';
 
     /**
+     * @var string[]
+     */
+    protected $casts = [
+        "hobby" => "array"
+    ];
+
+    /**
      * @var array
      */
     protected $fillable = [
@@ -58,7 +66,31 @@ class UserModel extends Model
         'password',
         'remember_token',
         'created_at',
-        'updated_at'
+        'updated_at',
+        "hobby"
     ];
 
+    /**
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+     * @param $value
+     */
+    public function setHobbyAttribute($value)
+    {
+        $this->attributes['hobby'] = $value;
+    }
 }

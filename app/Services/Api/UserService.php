@@ -32,7 +32,7 @@ class UserService
     public function index()
     {
         return $this->userModel
-            ->select(["id", "email", "name", "avatar"])
+            ->select(["id", "email", "name", "avatar", "hobby"])
             ->paginate();
     }
 

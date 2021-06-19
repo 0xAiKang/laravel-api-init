@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use App\Http\Requests\BaseRequest;
+use App\Rules\JsonValidator;
 
 class UserRequest extends BaseRequest
 {
@@ -23,18 +24,32 @@ class UserRequest extends BaseRequest
      */
     public function rules()
     {
-        switch ($this->route()->getActionMethod()) {
-            case "create":
-                return [
-                    "name" => "required|between:2,25",
-                    "email" => "required",
-                    "password" => "required|min:6|max:24",
-                ];
-            case "update":
-                return [
-                    "id" => "required|exists:users,id",
-                ];
-        }
+        return [
+            "id"       => "required|exists:users,id",
+            "name"     => "required|between:2,25",
+            "email"    => "required",
+            "password" => "required|min:6|max:24",
+            "hobby"    => [
+                "required",
+                new JsonValidator(),
+            ],
+        ];
+    }
+
+    /**
+     * @return array[]
+     */
+    public function scene()
+    {
+        return [
+            "index"  => [],
+            "create" => [
+                "name", "email", "password", "hobby"
+            ],
+            "update" => [
+                "id", "name", "email", "password", "hobby"
+            ],
+        ];
     }
 
     /**
@@ -43,10 +58,11 @@ class UserRequest extends BaseRequest
     public function attributes()
     {
         return [
-            "name" => "用户名称",
-            "email" => "用户邮箱",
+            "id"       => "用户ID",
+            "name"     => "用户名称",
+            "email"    => "用户邮箱",
             "password" => "用户密码",
-            "id" => "用户ID",
+            "hobby"    => "用户爱好",
         ];
     }
 }
