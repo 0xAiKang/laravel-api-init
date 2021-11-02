@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,26 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post("auth/login", [AuthController::class, "login"]);
-Route::post("auth/logout", [AuthController::class, "logout"]);
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+/** 注意⚠️：以下接口全部需要认证身份 */
+Route::middleware('auth.api')->group(function (){
+    Route::prefix("users")->group(function (){
+        Route::get("/test", [UsersController::class, "test"]);
+        Route::get("/index", [UsersController::class, "index"]);
+        Route::post("/create", [UsersController::class, "create"]);
+        Route::post("/update", [UsersController::class, "update"]);
+    });
 });
 
 // 另一种写法
-/*Route::prefix("v1")->group(function (){
-    Route::prefix("users")->group(function (){
-        Route::get("/index", [\App\Http\Controllers\Api\UsersController::class, "index"]);
-        Route::get("/create", [\App\Http\Controllers\Api\UsersController::class, "create"]);
-        Route::get("/update", [\App\Http\Controllers\Api\UsersController::class, "update"]);
-    });
-});*/
-
-Route::namespace("Api")->middleware("auth.api")->group(function (){
+/*Route::namespace("Api")->middleware("auth.api")->group(function (){
     Route::prefix("users")->group(function (){
         Route::get("/index", "UsersController@index")->scene("index");
         Route::post("/create", "UsersController@create")->scene("create");
         Route::post("/update", "UsersController@update")->scene("update");
     });
-});
+});*/
+

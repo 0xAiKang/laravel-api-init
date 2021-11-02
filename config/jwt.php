@@ -16,12 +16,7 @@ return [
     | JWT Authentication Secret
     |--------------------------------------------------------------------------
     |
-    | Don't forget to set this in your .env file, as it will be used to sign
-    | your tokens. A helper command is provided for this:
-    | `php artisan jwt:secret`
-    |
-    | Note: This will be used for Symmetric algorithms only (HMAC),
-    | since RSA and ECDSA use a private/public key combo (See below).
+    | 用于加密生成 token 的 secret
     |
     */
 
@@ -32,15 +27,9 @@ return [
     | JWT Authentication Keys
     |--------------------------------------------------------------------------
     |
-    | The algorithm you are using, will determine whether your tokens are
-    | signed with a random string (defined in `JWT_SECRET`) or using the
-    | following public & private keys.
-    |
-    | Symmetric Algorithms:
-    | HS256, HS384 & HS512 will use `JWT_SECRET`.
-    |
-    | Asymmetric Algorithms:
-    | RS256, RS384 & RS512 / ES256, ES384 & ES512 will use the keys below.
+    | 如果在 .env 文件中定义了 JWT_SECRET 的随机字符串
+    | 那么 jwt 将会使用 对称算法 来生成 token
+    | 如果没有定义，那么jwt 将会使用如下配置的公钥和私钥来生成 token
     |
     */
 
@@ -77,7 +66,7 @@ return [
         | Passphrase
         |--------------------------------------------------------------------------
         |
-        | The passphrase for your private key. Can be null if none set.
+        | 私钥的密码。 如果没有设置，可以为 null。
         |
         */
 
@@ -90,14 +79,7 @@ return [
     | JWT time to live
     |--------------------------------------------------------------------------
     |
-    | Specify the length of time (in minutes) that the token will be valid for.
-    | Defaults to 1 hour.
-    |
-    | You can also set this to null, to yield a never expiring token.
-    | Some people may want this behaviour for e.g. a mobile app.
-    | This is not particularly recommended, so make sure you have appropriate
-    | systems in place to revoke the token if necessary.
-    | Notice: If you set this to null you should remove 'exp' element from 'required_claims' list.
+    | 指定 access_token 有效的时间长度（以分钟为单位），默认为1小时，您也可以将其设置为空，以产生永不过期的标记
     |
     */
 
@@ -108,15 +90,9 @@ return [
     | Refresh time to live
     |--------------------------------------------------------------------------
     |
-    | Specify the length of time (in minutes) that the token can be refreshed
-    | within. I.E. The user can refresh their token within a 2 week window of
-    | the original token being created until they must re-authenticate.
-    | Defaults to 2 weeks.
-    |
-    | You can also set this to null, to yield an infinite refresh time.
-    | Some may want this instead of never expiring tokens for e.g. a mobile app.
-    | This is not particularly recommended, so make sure you have appropriate
-    | systems in place to revoke the token if necessary.
+    | 指定 access_token 可刷新的时间长度（以分钟为单位）。默认的时间为 2 周。
+    | 大概意思就是如果用户有一个 access_token，那么他可以带着他的 access_token
+    | 过来领取新的 access_token，直到 2 周的时间后，他便无法继续刷新了，需要重新登录。
     |
     */
 
@@ -127,7 +103,7 @@ return [
     | JWT hashing algorithm
     |--------------------------------------------------------------------------
     |
-    | Specify the hashing algorithm that will be used to sign the token.
+    | 指定将用于对令牌进行签名的散列算法。
     |
     | See here: https://github.com/namshi/jose/tree/master/src/Namshi/JOSE/Signer/OpenSSL
     | for possible values.
@@ -141,9 +117,7 @@ return [
     | Required Claims
     |--------------------------------------------------------------------------
     |
-    | Specify the required claims that must exist in any token.
-    | A TokenInvalidException will be thrown if any of these claims are not
-    | present in the payload.
+    | 指定必须存在于任何令牌中的声明。
     |
     */
 
@@ -161,11 +135,7 @@ return [
     | Persistent Claims
     |--------------------------------------------------------------------------
     |
-    | Specify the claim keys to be persisted when refreshing a token.
-    | `sub` and `iat` will automatically be persisted, in
-    | addition to the these claims.
-    |
-    | Note: If a claim does not exist then it will be ignored.
+    | 指定在刷新令牌时要保留的声明密钥。
     |
     */
 
@@ -215,8 +185,8 @@ return [
     | Blacklist Enabled
     |--------------------------------------------------------------------------
     |
-    | In order to invalidate tokens, you must have the blacklist enabled.
-    | If you do not want or need this functionality, then set this to false.
+    | 为了使令牌无效，您必须启用黑名单。
+    | 如果您不想或不需要此功能，请将其设置为 false。
     |
     */
 
@@ -227,11 +197,9 @@ return [
     | Blacklist Grace Period
     | -------------------------------------------------------------------------
     |
-    | When multiple concurrent requests are made with the same JWT,
-    | it is possible that some of them fail, due to token regeneration
-    | on every request.
-    |
-    | Set grace period in seconds to prevent parallel request failure.
+    | 当多个并发请求使用相同的JWT进行时，
+    | 由于 access_token 的刷新 ，其中一些可能会失败
+    | 以秒为单位设置请求时间以防止并发的请求失败。
     |
     */
 
@@ -260,7 +228,7 @@ return [
     | Providers
     |--------------------------------------------------------------------------
     |
-    | Specify the various providers used throughout the package.
+    | 指定整个包中使用的各种提供程序。
     |
     */
 
@@ -271,7 +239,7 @@ return [
         | JWT Provider
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to create and decode the tokens.
+        | 指定用于创建和解码令牌的提供程序。
         |
         */
 
@@ -282,7 +250,7 @@ return [
         | Authentication Provider
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to authenticate users.
+        | 指定用于对用户进行身份验证的提供程序。
         |
         */
 
@@ -293,7 +261,7 @@ return [
         | Storage Provider
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to store tokens in the blacklist.
+        | 指定用于在黑名单中存储标记的提供程序。
         |
         */
 

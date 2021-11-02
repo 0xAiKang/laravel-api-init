@@ -2,7 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckPermissions;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -53,7 +57,15 @@ class Kernel extends HttpKernel
 
         'api' => [
             // 访问节流
-            'throttle:api',
+            // 'throttle:api',
+
+            // 路由模型绑定
+            "bindings",
+        ],
+
+        'admin' => [
+            // 访问节流
+            // 'throttle:api',
 
             // 路由模型绑定
             "bindings",
@@ -98,7 +110,21 @@ class Kernel extends HttpKernel
         // Laravel 自带的强制用户邮箱认证的中间件
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
+        // token 无痛刷新
+        // "jwt.refresh" => \App\Http\Middleware\RefreshToken::class,
+
+        // 管理员身份认证
+        "auth.admin" => \App\Http\Middleware\AuthAdmin::class,
+
         // api身份认证
         "auth.api" => \App\Http\Middleware\AuthApi::class,
+
+        //权限认证路由
+        'role' => RoleMiddleware::class,
+        'permission' => PermissionMiddleware::class,
+        'role_or_permission' => RoleOrPermissionMiddleware::class,
+
+        // 检查权限
+        'check.permissions' => CheckPermissions::class
     ];
 }

@@ -52,3 +52,49 @@ if (!function_exists("dda")) {
         }
     }
 }
+
+if (!function_exists("user")) {
+    /**
+     * 获取当前登录用户实例
+     *
+     */
+    function user()
+    {
+        return auth("api")->user();
+    }
+}
+
+if (!function_exists("uid")) {
+    /**
+     * 获取当前登录用户ID
+     *
+     * @return int|string|null
+     */
+    function uid()
+    {
+        return auth("api")->id();
+    }
+}
+
+if (!function_exists("admin")) {
+    /**
+     * 获取当前登录管理员实例
+     *
+     */
+    function admin()
+    {
+        return auth("admin")->user();
+    }
+}
+
+if (!function_exists("admin_id")) {
+    /**
+     * 获取当前登录管理员ID
+     *
+     * @return int|string|null
+     */
+    function admin_id()
+    {
+        return auth("admin")->id();
+    }
+}

@@ -19,6 +19,21 @@ return [
 
     'default' => env('LOG_CHANNEL', 'stack'),
 
+    /**
+     * Enable Query Logger
+     */
+    'query' => [
+        'enabled' => env('LOG_QUERY', env('APP_ENV') === 'DEV'),
+
+        // Only record queries that are slower than the following time
+        // Unit: milliseconds
+        'slower_than' => 0,
+
+        // Only record queries when the QUERY_LOG_TRIGGER is set in the environment,
+        // or when the trigger HEADER, GET, POST, or COOKIE variable is set.
+        'trigger' => env('QUERY_LOG_TRIGGER'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Log Channels

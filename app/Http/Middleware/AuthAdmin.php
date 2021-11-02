@@ -4,11 +4,18 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\AuthException;
 use App\Exceptions\InvalidRequestException;
-use App\Models\UserModel;
+use App\Models\AdminModel;
 use Closure;
 use Illuminate\Http\Request;
 
-class AuthApi
+/**
+ * 管理员身份验证中间件
+ *
+ * Class AuthAdmin
+ *
+ * @package App\Http\Middleware
+ */
+class AuthAdmin
 {
     /**
      * Handle an incoming request.
@@ -37,17 +44,16 @@ class AuthApi
         }
 
         // 只有需要验证的接口才会走该中间件，登录等接口无需验证此中间件
-        $guard = \Auth::guard("api");
+        $guard = \Auth::guard("admin");
 
-        // 调试模式下不验证身份，分配默认用户
-        if (app()->environment() === "DEV" && !$guard->check()) {
-            $user = UserModel::find(1);
-            if (!$user) {
+        // 开发模式不验证身份，分配默认用户
+        if (app()->environment() === 'DEV') {
+            $admin = AdminModel::find(1);
+            if (!$admin) {
                 throw new AuthException();
             }
 
-            auth("api")->setUser($user);
-
+            auth("admin")->setUser($admin);
             return $next($request);
         }
 
@@ -55,10 +61,10 @@ class AuthApi
             throw new AuthException();
         }
 
-        $user = $guard->user();
+        $admin = $guard->user();
 
-        if ($user->is_deleted) {
-            throw new InvalidRequestException("账户存在异常");
+        if (0 == $admin->is_enable) {
+            throw new InvalidRequestException("该管理员已被禁用");
         }
 
         return $next($request);

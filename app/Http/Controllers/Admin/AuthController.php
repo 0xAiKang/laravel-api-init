@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Api\AuthService;
+use App\Services\Admin\AuthService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     /**
-     * @var \App\Services\Api\AuthService
+     * @var \App\Services\Admin\AuthService
      */
     protected AuthService $service;
 

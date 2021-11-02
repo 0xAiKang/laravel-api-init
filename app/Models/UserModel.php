@@ -16,17 +16,13 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string|null                     $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null                     $avatar     用户头像
- * @property int                             $is_deleted 是否删除
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel query()
- * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereIsDeleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserModel whereRememberToken($value)
@@ -50,13 +46,6 @@ class UserModel extends Authenticatable implements JWTSubject
     protected $keyType = 'integer';
 
     /**
-     * @var string[]
-     */
-    protected $casts = [
-        "hobby" => "array"
-    ];
-
-    /**
      * @var array
      */
     protected $fillable = [
@@ -67,7 +56,6 @@ class UserModel extends Authenticatable implements JWTSubject
         'remember_token',
         'created_at',
         'updated_at',
-        "hobby"
     ];
 
     /**
@@ -84,13 +72,5 @@ class UserModel extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    /**
-     * @param $value
-     */
-    public function setHobbyAttribute($value)
-    {
-        $this->attributes['hobby'] = $value;
     }
 }

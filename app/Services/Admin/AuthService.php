@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Api;
+namespace App\Services\Admin;
 
 use App\Exceptions\InvalidRequestException;
 
@@ -23,7 +23,7 @@ class AuthService
     public function login($request)
     {
         $rules = [
-            "name" => "required",
+            "username" => "required",
             "password" => "required",
         ];
 
@@ -33,12 +33,12 @@ class AuthService
             throw new InvalidRequestException("用户名或密码不能为空");
         }
 
-        if (!$token = auth("api")->attempt($validator->validated())) {
+        if (!$token = auth("admin")->attempt($validator->validated())) {
             throw new InvalidRequestException("用户名或密码错误");
         }
 
         return [
-            "token" => $token,
+            "token"      => $token,
             'token_type' => 'Bearer',
         ];
     }

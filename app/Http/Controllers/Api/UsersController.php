@@ -25,7 +25,17 @@ class UsersController extends Controller
      */
     public function __construct(UserService $userService)
     {
+        $this->middleware("auth.api", ['except' => ['test']]);
+
         $this->userService = $userService;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function test()
+    {
+        return $this->success("ok");
     }
 
     /**
@@ -52,7 +62,7 @@ class UsersController extends Controller
      */
     public function create(UserRequest $request)
     {
-        $param = $request->only(["name", "email", "password", "avatar", "hobby"]);
+        $param = $request->only(["name", "email", "password"]);
         $this->userService->create($param);
 
         return $this->success();
@@ -67,7 +77,7 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request)
     {
-        $param = $request->only(["name", "email", "password", "avatar", "hobby"]);
+        $param = $request->only(["name", "email", "password"]);
         $this->userService->update($request->id, $param);
 
         return $this->success();
