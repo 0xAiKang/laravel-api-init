@@ -36,7 +36,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
 
         // 对空 转换成  null
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        // \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
     /**

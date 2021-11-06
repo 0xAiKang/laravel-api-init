@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Enums\System\SystemMenuType;
 use App\Exceptions\InternalException;
 use App\Exceptions\InvalidRequestException;
 use App\Models\System\SystemMenuModel;
@@ -82,14 +83,14 @@ class MenuService
     {
         $admin = auth('admin')->user();
         $permissionId = auth('admin')->user()->getAllPermissions()->pluck('id')->toArray();
-        if ($admin->is_root) {
-            $permissionId = false;
+
+        $builder = $this->model->newQuery();
+        $builder->where("type", SystemMenuType::MENU);
+        if (! $admin->is_root) {
+            $builder->whereIn('permission_id', $permissionId);
         }
-        $model = $this->model->where(['type' => 1]);
-        if ($permissionId) {
-            $model = $model->whereIn('permission_id', $permissionId);
-        }
-        $lists = $model->with(['permission'])->orderBy('sort', 'asc')->get();
+
+        $lists = $builder->with(['permission'])->orderBy('sort', 'asc')->get();
         $lists->transform(function ($item) {
             if ($item->permission) {
                 $permissionName = $item->permission->name;

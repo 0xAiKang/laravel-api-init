@@ -2,7 +2,6 @@
 
 namespace App\Services\Admin;
 
-use App\Enums\Admin\AdminStatus;
 use App\Exceptions\InternalException;
 use App\Models\AdminModel;
 use App\Models\System\RoleModel;
@@ -52,7 +51,6 @@ class AdminService
                 "admin_id",
                 "username",
                 "mobile",
-                "avatar",
                 "is_enable",
                 "is_root",
                 "created_at",
@@ -69,6 +67,7 @@ class AdminService
     public function create(array $data)
     {
         $data['is_enable'] = true;
+        $data["is_root"] = false;
         $this->model->create($data);
     }
 
@@ -80,12 +79,25 @@ class AdminService
      */
     public function update(array $data, $admin_id)
     {
-        if (is_null($data["password"])) {
+        if (!$data['password']) {
             unset($data['password']);
         }
 
         $admin = $this->model->find($admin_id);
         $admin->update($data);
+    }
+
+    /**
+     * 更新管理员账号状态
+     *
+     * @param $admin_id
+     */
+    public function setRoot($admin_id)
+    {
+        $admin = $this->model->find($admin_id);
+        $admin->is_root ^= 1;
+
+        $admin->save();
     }
 
     /**
@@ -122,6 +134,12 @@ class AdminService
 
     /**
      * 设置用户角色
+     *
+     * @param $params
+     * @param $id
+     *
+     * @return bool
+     * @throws \App\Exceptions\InternalException
      */
     public function setUserRoles($params, $id)
     {
@@ -134,8 +152,8 @@ class AdminService
 
             $model->syncRoles($roleNames);
             return true;
-        } catch (InternalException $exception) {
-            throw new InternalException();
+        } catch (\Exception $exception) {
+            throw new InternalException($exception->getMessage(), $exception);
         }
     }
 
@@ -155,6 +173,12 @@ class AdminService
 
     /**
      * 用户分配权限
+     *
+     * @param $params
+     * @param $id
+     *
+     * @return bool
+     * @throws \App\Exceptions\InternalException
      */
     public function setUserPermissions($params, $id)
     {
@@ -166,8 +190,8 @@ class AdminService
         try {
             $user = $this->model->find($id)->syncPermissions($permissions);
             return true;
-        } catch (InternalException $exception) {
-            throw new InternalException();
+        } catch (\Exception $exception) {
+            throw new InternalException($exception->getMessage(), $exception);
         }
     }
 }

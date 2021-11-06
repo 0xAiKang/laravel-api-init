@@ -36,7 +36,7 @@ class AdminRequest extends BaseRequest
                 new MobileValidator(),
                 "unique:admin,mobile",
             ],
-            "avatar" => "required|url",
+            // "avatar" => "required|url",
             "password" => "sometimes|required|string|min:6",
         ];
     }
@@ -51,15 +51,19 @@ class AdminRequest extends BaseRequest
             "create" => [
                 "username" => "required|between:1,25|unique:admin,username",
                 "password",
-                "avatar",
                 "mobile",
             ],
             "update" => [
                 "admin_id",
                 "username" => "required|between:1,25|unique:admin,username, {$this->admin_id}," . "admin_id",
-                "password",
-                "avatar",
-                "mobile",
+                "mobile"   => [
+                    "required",
+                    new MobileValidator(),
+                    "unique:admin,mobile, {$this->admin_id}," . "admin_id",
+                ]
+            ],
+            "setRoot" => [
+                "admin_id"
             ],
             "setDisable" => [
                 "admin_id"
@@ -95,7 +99,7 @@ class AdminRequest extends BaseRequest
     public function attributes()
     {
         return [
-            "avatar" => "头像",
+            // "avatar" => "头像",
         ];
     }
 }

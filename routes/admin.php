@@ -20,9 +20,10 @@ Route::post("auth/logout", [AuthController::class, "logout"]);
 Route::middleware(["auth.admin", "check.permissions"])->group(function () {
     /** @note 管理员管理 */
     Route::prefix("admin")->group(function () {
-        Route::get("/index", [AdminController::class, "index"])->scene("index");
+        Route::post("/index", [AdminController::class, "index"])->scene("index");
         Route::post("/create", [AdminController::class, "create"])->scene("create");
-        Route::post("/update", [AdminController::class, "update"])->scene("create");
+        Route::post("/update", [AdminController::class, "update"])->scene("update");
+        Route::post("/setRoot", [AdminController::class, "setRoot"])->name('设置超管')->scene("setRoot");
         Route::post("/setDisable", [AdminController::class, "setDisable"])->scene("setDisable");
 
         Route::post("/getUserRoles", [AdminController::class, "getUserRoles"])->scene("getUserRoles");

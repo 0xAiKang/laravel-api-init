@@ -104,7 +104,7 @@ class AdminController extends Controller
      */
     public function create(AdminRequest $request)
     {
-        $params = $request->only(["username", "password", "mobile", "avatar"]);
+        $params = $request->only(["username", "password", "mobile"]);
         $this->service->create($params);
 
         return $this->success();
@@ -119,8 +119,22 @@ class AdminController extends Controller
      */
     public function update(AdminRequest $request)
     {
-        $params = $request->only(["username", "password", "mobile", "avatar", "is_root"]);
+        $params = $request->only(["username", "password", "mobile"]);
         $this->service->update($params, $request->admin_id);
+
+        return $this->success();
+    }
+
+    /**
+     * 设置为超级管理员
+     *
+     * @param \App\Http\Requests\Admin\AdminRequest $request
+     *
+     * @return mixed
+     */
+    public function setRoot(AdminRequest $request)
+    {
+        $this->service->setRoot($request->admin_id);
 
         return $this->success();
     }

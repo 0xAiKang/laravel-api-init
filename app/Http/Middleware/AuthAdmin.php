@@ -47,7 +47,7 @@ class AuthAdmin
         $guard = \Auth::guard("admin");
 
         // 开发模式不验证身份，分配默认用户
-        if (app()->environment() === 'DEV') {
+        if (app()->environment() === 'DEV' && !$guard->check()) {
             $admin = AdminModel::find(1);
             if (!$admin) {
                 throw new AuthException();

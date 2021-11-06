@@ -73,4 +73,16 @@ class UserModel extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * 日期序列化
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return string
+     */
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

@@ -21,7 +21,6 @@ class CreateAdminTable extends Migration
             $table->string('username');
             $table->string('password');
             $table->string('mobile');
-            $table->string('avatar');
             $table->integer('role_id');
             $table->tinyInteger('is_enable');
             $table->tinyInteger('is_root');
@@ -33,7 +32,6 @@ class CreateAdminTable extends Migration
             "username" => "admin",
             "password" => '$2y$10$Rj2RYJnvqrQxnZXcOTyq..4xpl1hAI2pNPAHIbJ7Ek1Qvj8Sj73uO',
             "mobile"   => 13886969091,
-            "avatar"   => "https://cdn.jsdelivr.net/gh/0xAiKang/CDN/blog/images/avatar.jpg",
             "is_enable" => true,
             "is_root"   => true,
         ]);
